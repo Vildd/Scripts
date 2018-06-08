@@ -2,6 +2,7 @@ local Phoenix = {}
 
 Phoenix.optionEnable = Menu.AddOptionBool({ "Hero Specific", "Phoenix" }, "Phoenix", false)
 Phoenix.FireSpiritKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Fire spirit key", Enum.ButtonCode.BUTTON_CODE_NONE)
+Phoenix.ComboKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
 
 function Phoenix.OnUpdate()
   if not Menu.IsEnabled( Phoenix.optionEnable ) then return 
@@ -15,6 +16,10 @@ function Phoenix.OnUpdate()
 
     if Menu.IsKeyDownOnce(Phoenix.FireSpiritKey) then 
 	Phoenix.FireSpirit(me, enemy) 
+	end
+	
+	if Menu.IsKeyDown(Phoenix.ComboKey) then 
+	Phoenix.Combo(me, enemy) 
 	end
 	
 	enemy = Input.GetNearestHeroToCursor(Entity.GetTeamNum(me), Enum.TeamType.TEAM_ENEMY)
@@ -34,9 +39,64 @@ function Phoenix.InFront(delay)
 	end
 end
 
-function Phoenix.FireSpirit(me, enemy)
+function Phoenix.Combo(me, enemy)
+fs = NPC.GetAbility(me, "phoenix_fire_spirits")
+lfs = NPC.GetAbility(me, "phoenix_launch_fire_spirit")
+sr = NPC.GetAbility(me, "phoenix_sun_ray")
+sn = NPC.GetAbility(me, "phoenix_supernova")
+veil = NPC.GetItem(me, "item_veil_of_discord", true)
+shiva = NPC.GetItem(me, "item_shivas_guard", true)
+scptr = NPC.GetItem(me, "item_ultimate_scepter", true)
+aBuff = NPC.HasModifier(me, "modifier_item_ultimate_scepter_consumed")
 
-id = NPC.GetAbility(me, "phoenix_icarus_dive")
+if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
+      if fs and Ability.IsReady(fs) and Ability.IsCastable(fs, mana-Ability.GetManaCost(sn)) then
+	  Ability.CastNoTarget(fs)
+	  end
+	  if veil and Ability.IsReady(veil) and Ability.IsCastable(veil, mana-Ability.GetManaCost(sn))  then
+	  Ability.CastPosition(veil, Entity.GetAbsOrigin(enemy))
+	  end
+	  if shiva and Ability.IsReady(shiva) and Ability.IsCastable(shiva, mana-Ability.GetManaCost(sn)) then
+	  Ability.CastNoTarget(shiva)
+	  end
+	  else
+	  if fs and Ability.IsReady(fs) and Ability.IsCastable(fs, mana) then
+	  Ability.CastNoTarget(fs)
+	  end
+	  if veil and Ability.IsReady(veil) and Ability.IsCastable(veil, mana) then
+	  Ability.CastPosition(veil, Entity.GetAbsOrigin(enemy))
+	  end 
+	  if shiva and Ability.IsReady(shiva) and Ability.IsCastable(shiva, mana) then
+	  Ability.CastNoTarget(shiva)
+	  end
+	  end
+  
+	local range = 1400
+    local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType.TEAM_ENEMY)
+    for i, enemy in ipairs(enemyHeroes) do
+          if Ability.IsCastable(lfs, 0) and Ability.IsReady(lfs) then 
+	  if NPC.HasModifier(enemy, "modifier_phoenix_fire_spirit_burn") then return 
+	  else
+		if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
+			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemy))
+			else
+			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemy))
+		end
+		end
+		end
+end
+if not NPC.HasModifier(me, "modifier_phoenix_fire_spirit") then
+	if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
+	if scptr or aBuff then 
+	Ability.CastTarget(sn, me)
+	else
+	Ability.CastNoTarget(sn)
+	end
+	end
+    end
+	end
+
+function Phoenix.FireSpirit(me, enemy)
 fs = NPC.GetAbility(me, "phoenix_fire_spirits")
 lfs = NPC.GetAbility(me, "phoenix_launch_fire_spirit")
 sn = NPC.GetAbility(me, "phoenix_supernova")
@@ -62,6 +122,5 @@ if Ability.IsCastable(fs, mana) and Ability.IsReady(fs) then
 		end
 		end
 end
-
 
 return Phoenix
