@@ -51,13 +51,9 @@ if Ability.IsCastable(fs, mana) and Ability.IsReady(fs) then
 	  end
 	  end
 	
-	if not NPC.HasModifier(enemy, "modifier_phoenix_fire_spirit_burn") then burn = false
-	end
-	
       if Ability.IsCastable(lfs, 0) and Ability.IsReady(lfs) then 
-	  if NPC.HasModifier(enemy, "modifier_phoenix_fire_spirit_burn") and burn == true then return 
+	  if NPC.HasModifier(enemy, "modifier_phoenix_fire_spirit_burn") then return 
 	  else
-	  burn = true 
 		if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
 			Ability.CastPosition(lfs, Phoenix.InFront(200))
 			else
