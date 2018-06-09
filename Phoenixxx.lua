@@ -1,5 +1,5 @@
 -- ----------------------------------------------------------
- -- ___   ___   ___ ___    ___ ___  ___      ___     ___
+--  ___   ___   ___ ___    ___ ___  ___      ___     ___
 -- |  _ \  \  \/ /   \ \  / /  | |  | |     |    \  |    \
 -- |    /   \   /     | || |    -   | |     |  |  | |  |  |
 -- |    \    | |      | || |   | |  | |     |  |  | |  |  |
@@ -74,17 +74,16 @@ if sn and Ability.IsReady(sn) and Ability.IsCastable(sn, mana) then
 	  end
 	  end
   
-local range = 1400
-local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType
+  local range = 1400
+  local enemy = Entity.GetHeroesInRadius(me, range, Enum.TeamType.TEAM_ENEMY)
   if lfs and Ability.IsReady(lfs) and Ability.IsCastable(lfs, mana) then 
-    for i, enemies in ipairs(enemyHeroes) do
+    for i, enemies in ipairs(enemy) do
 	  if NPC.HasModifier(enemies, "modifier_phoenix_fire_spirit_burn") then return 
 	  else
 			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemies))
 		end
 		end
 end
-if not NPC.HasModifier(me, "modifier_phoenix_fire_spirit") then
 	if sn and Ability.IsReady(sn) and Ability.IsCastable(sn, mana) then
 	if scptr or aBuff then 
 	Ability.CastTarget(sn, me)
@@ -93,7 +92,6 @@ if not NPC.HasModifier(me, "modifier_phoenix_fire_spirit") then
 	end
 	end
     end
-	end
 
 function Phoenix.FireSpirit(me, enemy)
 local fs = NPC.GetAbility(me, "phoenix_fire_spirits")
