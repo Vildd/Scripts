@@ -51,8 +51,6 @@ if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
 	  end
 	  if shiva and Ability.IsReady(shiva) and Ability.IsCastable(shiva, mana-Ability.GetManaCost(sn)) then
 	  Ability.CastNoTarget(shiva)
-	  end
-	  else
 	  if fs and Ability.IsReady(fs) and Ability.IsCastable(fs, mana) then
 	  Ability.CastNoTarget(fs)
 	  end
