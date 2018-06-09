@@ -85,17 +85,13 @@ if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
 	  end
 	  end
   
+  if Ability.IsCastable(lfs, 0) and Ability.IsReady(lfs) then 
 	local range = 1400
     local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType.TEAM_ENEMY)
     for i, enemies in ipairs(enemyHeroes) do
-          if Ability.IsCastable(lfs, 0) and Ability.IsReady(lfs) then 
 	  if NPC.HasModifier(enemies, "modifier_phoenix_fire_spirit_burn") then return 
 	  else
-		if NPC.HasState(enemies, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemies, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemies) then
 			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemies))
-			else
-			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemies))
-		end
 		end
 		end
 end
