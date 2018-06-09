@@ -74,9 +74,9 @@ if sn and Ability.IsReady(sn) and Ability.IsCastable(sn, mana) then
 	  end
 	  end
   
+local range = 1400
+local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType
   if lfs and Ability.IsReady(lfs) and Ability.IsCastable(lfs, mana) then 
-	local range = 1400
-    local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType.TEAM_ENEMY)
     for i, enemies in ipairs(enemyHeroes) do
 	  if NPC.HasModifier(enemies, "modifier_phoenix_fire_spirit_burn") then return 
 	  else
