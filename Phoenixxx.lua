@@ -52,6 +52,7 @@ local veil = NPC.GetItem(me, "item_veil_of_discord", true)
 local shiva = NPC.GetItem(me, "item_shivas_guard", true)
 local scptr = NPC.GetItem(me, "item_ultimate_scepter", true)
 local aBuff = NPC.HasModifier(me, "modifier_item_ultimate_scepter_consumed")
+Phoenix.CastTime=0
 
 if icarus and Ability.IsReady(icarus) and Ability.IsCastable(icarus, mana)  then
 	  Ability.CastPosition(icarus, Entity.GetAbsOrigin(enemy))
