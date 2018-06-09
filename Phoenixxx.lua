@@ -56,9 +56,9 @@ local aBuff = NPC.HasModifier(me, "modifier_item_ultimate_scepter_consumed")
 if icarus and Ability.IsReady(icarus) and Ability.IsCastable(icarus, mana)  then
 	  Ability.CastPosition(icarus, Entity.GetAbsOrigin(enemy))
 	  if NPC.GetAbility(me, "special_bonus_icarus_dive_cast_range_1400") then
-	  Phoenix.CastTime = os.clock() + 1.6
+	  Phoenix.CastTime = os.clock() + 1.5
 	  else
-	  Phoenix.CastTime = os.clock() + 1.1
+	  Phoenix.CastTime = os.clock() + 1
 	  end
 	  end
 	  
