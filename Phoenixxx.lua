@@ -7,7 +7,6 @@
 |    /    | |        \/     | |  |     | |    /  |    /
 ----------------------------------------------------------
 
-
 local Phoenix = {}
 
 Phoenix.optionEnable = Menu.AddOptionBool({ "Hero Specific", "Phoenix" }, "Phoenixxx", false)
@@ -52,19 +51,8 @@ local veil = NPC.GetItem(me, "item_veil_of_discord", true)
 local shiva = NPC.GetItem(me, "item_shivas_guard", true)
 local scptr = NPC.GetItem(me, "item_ultimate_scepter", true)
 local aBuff = NPC.HasModifier(me, "modifier_item_ultimate_scepter_consumed")
-Phoenix.CastTime=0
 
-if icarus and Ability.IsReady(icarus) and Ability.IsCastable(icarus, mana)  then
-	  Ability.CastPosition(icarus, Entity.GetAbsOrigin(enemy))
-	  if NPC.GetAbility(me, "special_bonus_icarus_dive_cast_range_1400") then
-	  Phoenix.CastTime = os.clock() + 1.5
-	  else
-	  Phoenix.CastTime = os.clock() + 1
-	  end
-	  end
-	  
-	  if Phoenix.CastTime <= os.clock() then
-if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
+if sn and Ability.IsReady(sn) and Ability.IsCastable(sn, mana) then
       if fs and Ability.IsReady(fs) and Ability.IsCastable(fs, mana-Ability.GetManaCost(sn)) then
 	  Ability.CastNoTarget(fs)
 	  end
@@ -86,7 +74,7 @@ if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
 	  end
 	  end
   
-  if Ability.IsCastable(lfs, 0) and Ability.IsReady(lfs) then 
+  if lfs and Ability.IsReady(lfs) and Ability.IsCastable(lfs, mana) then 
 	local range = 1400
     local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType.TEAM_ENEMY)
     for i, enemies in ipairs(enemyHeroes) do
@@ -97,7 +85,7 @@ if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
 		end
 end
 if not NPC.HasModifier(me, "modifier_phoenix_fire_spirit") then
-	if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
+	if sn and Ability.IsReady(sn) and Ability.IsCastable(sn, mana) then
 	if scptr or aBuff then 
 	Ability.CastTarget(sn, me)
 	else
@@ -105,7 +93,6 @@ if not NPC.HasModifier(me, "modifier_phoenix_fire_spirit") then
 	end
 	end
     end
-	end
 	end
 
 function Phoenix.FireSpirit(me, enemy)
