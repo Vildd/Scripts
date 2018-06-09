@@ -33,6 +33,7 @@ function Phoenix.OnUpdate()
 end
 
 function Phoenix.Combo(me, enemy)
+local icarus = NPC.GetAbility(me, "phoenix_icarus_dive")
 local fs = NPC.GetAbility(me, "phoenix_fire_spirits")
 local lfs = NPC.GetAbility(me, "phoenix_launch_fire_spirit")
 local sr = NPC.GetAbility(me, "phoenix_sun_ray")
@@ -42,6 +43,16 @@ local shiva = NPC.GetItem(me, "item_shivas_guard", true)
 local scptr = NPC.GetItem(me, "item_ultimate_scepter", true)
 local aBuff = NPC.HasModifier(me, "modifier_item_ultimate_scepter_consumed")
 
+if icarus and Ability.IsReady(icarus) and Ability.IsCastable(icarus, mana)  then
+	  Ability.CastPosition(icarus, Entity.GetAbsOrigin(enemy))
+	  if NPC.GetAbility(me, "special_bonus_icarus_dive_cast_range_1400") then
+	  Phoenix.CastTime = os.clock() + 1.6
+	  else
+	  Phoenix.CastTime = os.clock() + 1.1
+	  end
+	  end
+	  
+	  if Phoenix.CastTime <= os.clock() then
 if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
       if fs and Ability.IsReady(fs) and Ability.IsCastable(fs, mana-Ability.GetManaCost(sn)) then
 	  Ability.CastNoTarget(fs)
@@ -51,6 +62,8 @@ if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
 	  end
 	  if shiva and Ability.IsReady(shiva) and Ability.IsCastable(shiva, mana-Ability.GetManaCost(sn)) then
 	  Ability.CastNoTarget(shiva)
+	  end
+	  else
 	  if fs and Ability.IsReady(fs) and Ability.IsCastable(fs, mana) then
 	  Ability.CastNoTarget(fs)
 	  end
@@ -64,14 +77,14 @@ if Ability.IsCastable(sn, mana) and Ability.IsReady(sn) then
   
 	local range = 1400
     local enemyHeroes = Entity.GetHeroesInRadius(me, range, Enum.TeamType.TEAM_ENEMY)
-    for i, enemy in ipairs(enemyHeroes) do
+    for i, enemies in ipairs(enemyHeroes) do
           if Ability.IsCastable(lfs, 0) and Ability.IsReady(lfs) then 
-	  if NPC.HasModifier(enemy, "modifier_phoenix_fire_spirit_burn") then return 
+	  if NPC.HasModifier(enemies, "modifier_phoenix_fire_spirit_burn") then return 
 	  else
-		if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
-			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemy))
+		if NPC.HasState(enemies, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemies, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemies) then
+			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemies))
 			else
-			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemy))
+			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemies))
 		end
 		end
 		end
@@ -85,6 +98,7 @@ if not NPC.HasModifier(me, "modifier_phoenix_fire_spirit") then
 	end
 	end
     end
+	end
 	end
 
 function Phoenix.FireSpirit(me, enemy)
@@ -148,5 +162,19 @@ end
 		end
 end
 end 
+
+function Phoenix.InFront(delay)
+	local enemyPos = Entity.GetAbsOrigin(enemy)
+	local vec = Entity.GetRotation(enemy):GetVectors()
+	local adjusment = NPC.GetMoveSpeed(enemy)
+	if delay == 610 then
+		adjusment = 300
+	end
+	if vec then		
+		local x = enemyPos:GetX() + vec:GetX() *(delay / 1000) * adjusment
+		local y = enemyPos:GetY() + vec:GetY() *(delay / 1000) * adjusment
+		return Vector(x, y, enemyPos:GetZ())
+	end
+	end
 
 return Phoenix
