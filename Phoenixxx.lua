@@ -151,18 +151,4 @@ end
 end
 end 
 
-function Phoenix.InFront(delay)
-	local enemyPos = Entity.GetAbsOrigin(enemy)
-	local vec = Entity.GetRotation(enemy):GetVectors()
-	local adjusment = NPC.GetMoveSpeed(enemy)
-	if delay == 610 then
-		adjusment = 300
-	end
-	if vec then		
-		local x = enemyPos:GetX() + vec:GetX() *(delay / 1000) * adjusment
-		local y = enemyPos:GetY() + vec:GetY() *(delay / 1000) * adjusment
-		return Vector(x, y, enemyPos:GetZ())
-	end
-end
-
 return Phoenix
