@@ -2,7 +2,7 @@ local Phoenix = {}
 
 Phoenix.optionEnable = Menu.AddOptionBool({ "Hero Specific", "Phoenix" }, "Phoenix", false)
 Phoenix.FireSpiritTargetKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Fire spirit at the target", Enum.ButtonCode.BUTTON_CODE_NONE)
-Phoenix.FireSpiritKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Fire spirit at combo", Enum.ButtonCode.BUTTON_CODE_NONE)
+Phoenix.FireSpiritKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Fire spirit combo", Enum.ButtonCode.BUTTON_CODE_NONE)
 Phoenix.ComboKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
 Phoenix.optionEnableOrchid  = Menu.AddOptionBool({"Hero Specific", "Phoenix","Items"},"use Orchid",false)
 Phoenix.optionEnableThorn  = Menu.AddOptionBool({"Hero Specific", "Phoenix","Items"},"use Bloodthorn ",false)
