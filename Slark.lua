@@ -1,5 +1,6 @@
 local Slark = {}
 
+
 Slark.option = Menu.AddOptionBool({"VAIO", "Slark"}, "Slark", false)
 Slark.optionTarget = Menu.AddOptionSlider({"VAIO", "Slark"}, "Target Radius", 200, 1000, 500)
 Slark.optionComboKey = Menu.AddKeyOption({"VAIO", "Slark"}, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
@@ -17,7 +18,6 @@ Slark.casted = false
 Slark.castedm = false
 
 
-
 function Slark.OnUpdate()
 if not Menu.IsEnabled(Slark.option) then return end
 myHero = Heroes.GetLocal()
@@ -26,10 +26,12 @@ mana = NPC.GetMana(myHero)
 enemy = Slark.Target(myHero)
 mypos = Entity.GetAbsOrigin(myHero)
 
+
 --Skills
 local q = NPC.GetAbility(myHero, "slark_dark_pact")
 local w = NPC.GetAbility(myHero, "slark_pounce")
 local r = NPC.GetAbility(myHero, "slark_shadow_dance")
+
 
 --Items
 local mom = NPC.GetItem(myHero, "item_mask_of_madness", true)
@@ -78,6 +80,7 @@ end
 local silver = NPC.GetItem(myHero, "item_silver_edge", true)
 local scptr = NPC.GetItem(myHero, "item_ultimate_scepter", true)
 
+
 --Combo
 if Menu.IsKeyDown(Slark.optionComboKey) then
 distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
@@ -119,18 +122,18 @@ Ability.CastTarget(abyssal, enemy)
 return
 end
 if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
-if Slark.check == true then
-Slark.check = false
-Slark.ComboTimer = os.clock() + 0.35
-end
-if Slark.check == false then
 castpos = (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(distance - 1))
 Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
-if Slark.ComboTimer < os.clock() then
+puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(distance)
+if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
+predpos = Slark.InFront(50)
+else
+predpos = Slark.InFront(300)
+end
+jump = (puncepos - predpos):Length2D()
+if jump <= 100 then
 Ability.CastNoTarget(w) 
-Slark.check = true
-return
-end 
+return 
 end
 end
 end
@@ -140,29 +143,22 @@ end
 
 if Slark.casted == true then
 distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
-if distance>650 then 
-if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
-Ability.CastNoTarget(w) 
-end
-else
-if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
-if Slark.check == true then
-Slark.check = false
-Slark.ComboTimer = os.clock() + 0.35
-end
-if Slark.check == false then
 castpos = (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(distance - 1))
 Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
-if Slark.ComboTimer < os.clock() then
+puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(distance)
+if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
+predpos = Slark.InFront(50)
+else
+predpos = Slark.InFront(300)
+end
+jump = (puncepos - predpos):Length2D()
+if jump <= 100 then
 Ability.CastNoTarget(w) 
-Slark.check = true
 Slark.casted = false
-return
-end 
+return 
 end
 end
-end
-end
+
 
 
 if Slark.castedm == true then
@@ -170,7 +166,7 @@ distance = (Input.GetWorldCursorPos() - Entity.GetAbsOrigin(myHero)):Length2D()
 if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
 if Slark.check == true then
 Slark.check = false
-Slark.ComboTimer = os.clock() + 0.35
+Slark.ComboTimer = os.clock() + 0.3
 end
 if Slark.check == false then
 castpos = (Input.GetWorldCursorPos() + (Entity.GetAbsOrigin(myHero) - Input.GetWorldCursorPos()):Normalized():Scaled(distance - 1))
@@ -185,6 +181,7 @@ end
 end
 end
 
+
 --Ult
 if Menu.IsEnabled(Slark.optionAutoUlt) then
 if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) then
@@ -195,6 +192,7 @@ end
 end
 end
 end
+
 
 function Slark.Target(myHero)
 if not myHero then return end
@@ -210,21 +208,41 @@ return mousePos
 end
 end
 
+
 function Slark.OnPrepareUnitOrders(orders)
 if not orders or not orders.ability then return true end
-    if not Entity.IsAbility(orders.ability) then return true end
-    if orders.order == Enum.UnitOrder.DOTA_UNIT_ORDER_TRAIN_ABILITY then return true end
-    if Ability.GetName(orders.ability) == "slark_pounce" then
-	if Menu.IsEnabled(Slark.optionPounceAim) then
-		if Menu.GetValue(Slark.optionPounce) < 1 then
-	Slark.casted = true
-	else
-		Slark.castedm = true
-		end
+if not Entity.IsAbility(orders.ability) then return true end
+if orders.order == Enum.UnitOrder.DOTA_UNIT_ORDER_TRAIN_ABILITY then return true end
+if Ability.GetName(orders.ability) == "slark_pounce" then
+if Menu.IsEnabled(Slark.optionPounceAim) then
+if Menu.GetValue(Slark.optionPounce) < 1 then
+distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
+if distance>650 then 
+Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+else
+Slark.casted = true
+end
+else
+Slark.castedm = true
+end
 return false
-	else
-	return true
-	end
+else
+return true
+end
+end
+end
+
+function Slark.InFront(delay)
+enemyPos = Entity.GetAbsOrigin(enemy)
+vec = Entity.GetRotation(enemy):GetVectors()
+adjusment = NPC.GetMoveSpeed(enemy)
+if delay == 610 then
+adjusment = 300
+end
+if vec then		
+x = enemyPos:GetX() + vec:GetX() *(delay / 1000) * adjusment
+y = enemyPos:GetY() + vec:GetY() *(delay / 1000) * adjusment
+return Vector(x, y, enemyPos:GetZ())
 end
 end
 
