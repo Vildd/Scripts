@@ -92,7 +92,7 @@ if Menu.IsEnabled(Leshrac.optionComboEul) and cyclone then
 if Ability.IsCastable(cyclone, mana-Ability.GetManaCost(q)) and Ability.IsReady(cyclone) then
 target = enemy
 Ability.CastTarget(cyclone, enemy) 
-Leshrac.EulTimer = 1.4 + os.clock()
+Leshrac.EulTimer = 1.5 + os.clock()
 return
 end
 if Leshrac.EulTimer < os.clock() then
@@ -122,6 +122,19 @@ if e and Ability.IsCastable(e, mana) and Ability.IsReady(e) then
 Ability.CastTarget(e, target) 
 return
 end 
+if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
+Ability.CastNoTarget(w) 
+return
+end 
+if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_pulse_nova") then
+Ability.Toggle(r) 
+return
+end 
+distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
+if distance<400 then 
+Player.AttackTarget(Players.GetLocal(), myHero, enemy, true) 
+return
+end
 end
 else
 if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) then
@@ -160,9 +173,22 @@ if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
 if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_leshrac_lightning_storm_slow") then
 Ability.CastPosition(q, Leshrac.InFront(150)) 
 else
-Ability.CastPosition(q, Leshrac.InFront(700)) 
+Ability.CastPosition(q, Leshrac.InFront(900)) 
 return
 end 
+end
+if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
+Ability.CastNoTarget(w) 
+return
+end 
+if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_pulse_nova") then
+Ability.Toggle(r) 
+return
+end 
+distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
+if distance<400 then 
+Player.AttackTarget(Players.GetLocal(), myHero, enemy, true)
+return
 end
 end
 end
@@ -178,6 +204,7 @@ end
 end
 end
 end
+
 
 
 function Leshrac.Target(myHero)
