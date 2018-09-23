@@ -262,7 +262,7 @@ function VAIO.OnUpdate()
 							Ability.CastNoTarget(w) 
 							return
 						end 
-						if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_ulse_nova") then
+						if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_pulse_nova") then
 							Ability.Toggle(r) 
 							return
 						end 
