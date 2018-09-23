@@ -198,7 +198,7 @@ function VAIO.OnUpdate()
 				npc = NPCs.Get(i)
 				if npc and npc ~= myHero and Entity.IsSameTeam(myHero, npc) then
 					if (Entity.GetOwner(myHero) == Entity.GetOwner(npc) or Entity.OwnedBy(npc, myHero)) then
-						if NPC.GetUnitName(npc) == "npc_dota_VAIO_healing_ward" then
+						if NPC.GetUnitName(npc) == "npc_dota_juggernaut_healing_ward" then
 							NPC.MoveTo(npc, mypos, false, false)
 							return
 						end
@@ -262,7 +262,7 @@ function VAIO.OnUpdate()
 							Ability.CastNoTarget(w) 
 							return
 						end 
-						if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_VAIO_pulse_nova") then
+						if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_ulse_nova") then
 							Ability.Toggle(r) 
 							return
 						end 
@@ -316,7 +316,7 @@ function VAIO.OnUpdate()
 						end
 					end
 					if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
-							if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_VAIO_lightning_storm_slow") then
+							if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_leshrac_lightning_storm_slow") then
 							Ability.CastPosition(q, VAIO.InFront(150)) 
 							return
 						else
@@ -328,7 +328,7 @@ function VAIO.OnUpdate()
 						Ability.CastNoTarget(w) 
 						return
 					end 
-					if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_VAIO_pulse_nova") then
+					if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_pulse_nova") then
 						Ability.Toggle(r) 
 						return
 					end 
@@ -535,7 +535,7 @@ function VAIO.OnUpdate()
 		if Menu.IsEnabled(VAIO.optionSlarkAutoUlt) then
 			if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) then
 				if (Entity.GetHealth(myHero) <= (Entity.GetMaxHealth(myHero) * (Menu.GetValue(VAIO.optionSlarkUltSlider) / 100))) then
-					if NPC.HasModifier(myHero, "modifier_VAIO_shadow_dance_passive_regen") then return end
+					if NPC.HasModifier(myHero, "modifier_slark_shadow_dance_passive_regen") then return end
 					Ability.CastNoTarget(r) 
 					return
 				end
