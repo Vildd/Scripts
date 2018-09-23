@@ -579,7 +579,7 @@ function VAIO.OnUpdate()
 
 		if Entity.IsAlive(epnd) then
 			if Menu.IsEnabled(VAIO.optionBrewmasterClap) then
-				local clap = NPC.GetAbility(epnd, "VAIO_thunder_clap")
+				local clap = NPC.GetAbility(epnd, "brewmaster_thunder_clap")
 				emana = NPC.GetMana(epnd)
 				if clap and Ability.IsCastable(clap, emana) and Ability.IsReady(clap) then
 					enemies = Entity.GetHeroesInRadius(epnd, 400, Enum.TeamType.TEAM_ENEMY)
@@ -589,7 +589,7 @@ function VAIO.OnUpdate()
 				end
 			end
 			if Menu.IsKeyDown(VAIO.optionBrewmasterStunKey) then
-				local stun = NPC.GetAbility(epnd, "VAIO_earth_hurl_boulder")
+				local stun = NPC.GetAbility(epnd, "brewmaster_earth_hurl_boulder")
 				emana = NPC.GetMana(epnd)
 				if stun and Ability.IsCastable(stun, emana) and Ability.IsReady(stun) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 					Ability.CastTarget(stun, enemy) 
@@ -600,7 +600,7 @@ function VAIO.OnUpdate()
 
 		if Entity.IsAlive(spnd) then
 			if Menu.IsKeyDown(VAIO.optionBrewmasterEulKey) then
-				local eul = NPC.GetAbility(spnd, "VAIO_storm_cyclone")
+				local eul = NPC.GetAbility(spnd, "brewmaster_storm_cyclone")
 				smana = NPC.GetMana(spnd)
 				if eul and Ability.IsCastable(eul, smana) and Ability.IsReady(eul) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 					Ability.CastTarget(eul, enemy) 
@@ -608,7 +608,7 @@ function VAIO.OnUpdate()
 				end
 			end
 			if Menu.IsKeyDown(VAIO.optionBrewmasterDispelKey) then
-				local dispel = NPC.GetAbility(spnd, "VAIO_storm_dispel_magic")
+				local dispel = NPC.GetAbility(spnd, "brewmaster_storm_dispel_magic")
 				smana = NPC.GetMana(spnd)
 				if dispel and Ability.IsCastable(dispel, smana) and Ability.IsReady(dispel) then
 					Ability.CastPosition(dispel, Entity.GetAbsOrigin(enemy)) 
@@ -616,7 +616,7 @@ function VAIO.OnUpdate()
 				end
 			end
 			if Menu.IsKeyDown(VAIO.optionBrewmasterInvisibleKey) then
-				local stealth = NPC.GetAbility(spnd, "VAIO_storm_wind_walk")
+				local stealth = NPC.GetAbility(spnd, "brewmaster_storm_wind_walk")
 				smana = NPC.GetMana(spnd)
 				if stealth and Ability.IsCastable(stealth, smana) and Ability.IsReady(stealth) then
 					Ability.CastNoTarget(stealth) 
@@ -625,7 +625,7 @@ function VAIO.OnUpdate()
 			end
 			if Menu.IsEnabled(VAIO.optionBrewmasterBeer) then
 				if NPC.HasState(spnd, Enum.ModifierState.MODIFIER_STATE_INVISIBLE) then return end
-				local beer = NPC.GetAbility(spnd, "VAIO_drunken_haze")
+				local beer = NPC.GetAbility(spnd, "brewmaster_drunken_haze")
 				smana = NPC.GetMana(spnd)
 				if beer and Ability.IsCastable(beer, smana) and Ability.IsReady(beer) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 					Ability.CastTarget(beer, enemy) 
@@ -633,7 +633,7 @@ function VAIO.OnUpdate()
 				end
 			end
 			if Menu.IsEnabled(VAIO.optionBrewmasterInvisible) then
-				local stealth = NPC.GetAbility(spnd, "VAIO_storm_wind_walk")
+				local stealth = NPC.GetAbility(spnd, "brewmaster_storm_wind_walk")
 				smana = NPC.GetMana(spnd)
 				if stealth and Ability.IsCastable(stealth, smana) and Ability.IsReady(stealth) then
 					Ability.CastNoTarget(stealth) 
@@ -641,7 +641,7 @@ function VAIO.OnUpdate()
 				end
 			end
 			if Menu.IsEnabled(VAIO.optionBrewmasterBeaker) then
-				local eul = NPC.GetAbility(spnd, "VAIO_storm_cyclone")
+				local eul = NPC.GetAbility(spnd, "brewmaster_storm_cyclone")
 				smana = NPC.GetMana(spnd)
 				if eul and Ability.IsCastable(eul, smana) and Ability.IsReady(eul) then
 					CastBreakerRange = 1000
