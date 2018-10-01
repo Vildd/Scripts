@@ -1,4 +1,4 @@
-Juggernaut = {}
+local Juggernaut = {}
 
 Juggernaut.option = Menu.AddOptionBool({"VAIO", "Juggernaut"}, "Juggernaut", false)
 Juggernaut.optionTarget = Menu.AddOptionSlider({"VAIO", "Juggernaut"}, "Target Radius", 200, 1000, 500)
