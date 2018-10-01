@@ -1,4 +1,4 @@
-Brewmaster = {}
+local Brewmaster = {}
 
 Brewmaster.option = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Brewmaster", false)
 Brewmaster.optionTarget = Menu.AddOptionSlider({"VAIO", "Brewmaster"}, "Target Radius", 200, 1000, 500)
