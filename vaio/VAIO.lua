@@ -4,18 +4,18 @@ VAIO.optionEnable = Menu.AddOptionBool({"VAIO"}, "Enable", false)
 VAIO.optionTarget = Menu.AddOptionSlider({"VAIO"}, "Target Radius", 200, 1000, 500)
 
 --Juggernaut
-VAIO.optionJuggernaut = Menu.AddOptionBool({"VAIO", "VAIO"}, "Juggernaut", false)
-VAIO.optionJuggernautComboKey = Menu.AddKeyOption({"VAIO", "VAIO"}, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
-VAIO.optionJuggernautBlink  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Blink", false)
-VAIO.optionJuggernautAbyssal  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Abyssal", false)
-VAIO.optionJuggernautManta  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Manta", false)
-VAIO.optionJuggernautNullifier  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Nullifier", false)
-VAIO.optionJuggernautSilence  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Silence", false)
-VAIO.optionJuggernautMom  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Mom", false)
-VAIO.optionJuggernautBkb  = Menu.AddOptionBool({"VAIO", "VAIO", "Items"}, "Bkb", false)
-VAIO.optionJuggernautTotemControl = Menu.AddOptionBool({"VAIO", "VAIO"}, "Totem control", false)
-VAIO.optionJuggernautAutoUlt = Menu.AddOptionBool({"VAIO", "VAIO"}, "Auto ultimate", false)
-VAIO.optionJuggernautUltSlider = Menu.AddOptionSlider({"VAIO", "VAIO"}, "HP threshold", 10 ,50, 30)
+VAIO.optionJuggernaut = Menu.AddOptionBool({"VAIO", "Juggernaut"}, "Juggernaut", false)
+VAIO.optionJuggernautComboKey = Menu.AddKeyOption({"VAIO", "Juggernaut"}, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
+VAIO.optionJuggernautBlink  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Blink", false)
+VAIO.optionJuggernautAbyssal  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Abyssal", false)
+VAIO.optionJuggernautManta  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Manta", false)
+VAIO.optionJuggernautNullifier  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Nullifier", false)
+VAIO.optionJuggernautSilence  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Silence", false)
+VAIO.optionJuggernautMom  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Mom", false)
+VAIO.optionJuggernautBkb  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Bkb", false)
+VAIO.optionJuggernautTotemControl = Menu.AddOptionBool({"VAIO", "Juggernaut"}, "Totem control", false)
+VAIO.optionJuggernautAutoUlt = Menu.AddOptionBool({"VAIO", "Juggernaut"}, "Auto ultimate", false)
+VAIO.optionJuggernautUltSlider = Menu.AddOptionSlider({"VAIO", "Juggernaut"}, "HP threshold", 10 ,50, 30)
 
 --Leshrac
 VAIO.optionLeshrac = Menu.AddOptionBool({"VAIO", "Leshrac"}, "Leshrac", false)
@@ -77,7 +77,7 @@ function VAIO.OnUpdate()
 	if not myHero then  return end
 	mana = NPC.GetMana(myHero)
 	enemy = VAIO.Target(myHero)
-	player = Players.GetLocal()  
+	
 	--Items
 	local mom = NPC.GetItem(myHero, "item_mask_of_madness", true)
 	local urn = NPC.GetItem(myHero, "item_urn_of_shadows", true)
@@ -138,7 +138,7 @@ function VAIO.OnUpdate()
 			if Menu.IsEnabled(VAIO.optionJuggernautBlink) and blink and Ability.IsCastable(blink, mana) and Ability.IsReady(blink) then
 				distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 				if distance>1200 then
-					Player.PrepareUnitOrders(player, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+					Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 				else
 					Ability.CastPosition(blink, Entity.GetAbsOrigin(enemy))
 					return
@@ -174,7 +174,7 @@ function VAIO.OnUpdate()
 					return
 				end
 			end
-			Player.AttackTarget(player, MyHero, enemy)
+			Player.AttackTarget(Players.GetLocal() , MyHero, enemy)
 			return
 		end
 
@@ -268,7 +268,7 @@ function VAIO.OnUpdate()
 						end
 						distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 						if distance<400 then
-							Player.AttackTarget(player, myHero, enemy, true)
+							Player.AttackTarget(Players.GetLocal() , myHero, enemy, true)
 							return
 						end
 					end
@@ -334,7 +334,7 @@ function VAIO.OnUpdate()
 					end
 					distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 					if distance<400 then
-						Player.AttackTarget(player, myHero, enemy, true)
+						Player.AttackTarget(Players.GetLocal() , myHero, enemy, true)
 						return
 					end
 			end
@@ -404,7 +404,7 @@ function VAIO.OnUpdate()
 					return
 				end
 			end
-			Player.AttackTarget(player, myHero, enemy, false)
+			Player.AttackTarget(Players.GetLocal() , myHero, enemy, false)
 			return
 		end
 
@@ -437,12 +437,12 @@ function VAIO.OnUpdate()
 		if Menu.IsKeyDown(VAIO.optionSlarkComboKey) then
 			distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 			if distance>650 then
-				Player.PrepareUnitOrders(player, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+				Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 			else
 				if NPC.HasState(myHero, Enum.ModifierState.MODIFIER_STATE_INVISIBLE) then
-					Player.AttackTarget(player, myHero, enemy, false)
+					Player.AttackTarget(Players.GetLocal() , myHero, enemy, false)
 				else
-					Player.AttackTarget(player, myHero, enemy, false)
+					Player.AttackTarget(Players.GetLocal() , myHero, enemy, false)
 					if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
 						Ability.CastNoTarget(q)
 						return
@@ -475,7 +475,7 @@ function VAIO.OnUpdate()
 					end
 					if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
 						castpos = (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(distance - 1))
-						Player.PrepareUnitOrders(player, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+						Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 						puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(distance)
 						if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
 							predpos = VAIO.InFront(50)
@@ -496,7 +496,7 @@ function VAIO.OnUpdate()
 		if VAIO.casted == true then
 			distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 			castpos = (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(distance - 1))
-			Player.PrepareUnitOrders(player, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+			Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 			puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(distance)
 			if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
 				predpos = VAIO.InFront(50)
@@ -520,7 +520,7 @@ function VAIO.OnUpdate()
 				end
 				if VAIO.check == false then
 					castpos = (Input.GetWorldCursorPos() + (Entity.GetAbsOrigin(myHero) - Input.GetWorldCursorPos()):Normalized():Scaled(distance - 1))
-					Player.PrepareUnitOrders(player, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+					Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 					if VAIO.ComboTimer < os.clock() then
 						Ability.CastNoTarget(w)
 						VAIO.check = true
@@ -669,7 +669,7 @@ function VAIO.OnPrepareUnitOrders(orders)
 			if Menu.GetValue(VAIO.optionSlarkPounce) < 1 then
 				distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 				if distance>650 then
-					Player.PrepareUnitOrders(player, Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+					Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 				else
 					VAIO.casted = true
 				end
