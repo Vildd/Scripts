@@ -43,7 +43,7 @@ VAIO.optionTerrorbladeAutoUlt = Menu.AddOptionBool({"VAIO", "Terrorblade"}, "Aut
 VAIO.optionTerrorbladeUltSlider = Menu.AddOptionSlider({"VAIO", "Terrorblade"}, "HP threshold", 10 ,50, 30)
 
 --Slark
-VAIO.optionSlark = Menu.AddOptionBool({"VAIO", "VAIO"}, "Slark", false)
+VAIO.optionSlark = Menu.AddOptionBool({"VAIO", "Slark"}, "Slark", false)
 VAIO.optionSlarkComboKey = Menu.AddKeyOption({"VAIO", "Slark"}, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
 VAIO.optionSlarkSilence  = Menu.AddOptionBool({"VAIO", "Slark", "Items"}, "Silence", false)
 VAIO.optionSlarkNullifier  = Menu.AddOptionBool({"VAIO", "Slark", "Items"}, "Nullifier", false)
