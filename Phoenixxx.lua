@@ -2,7 +2,6 @@ local Phoenix = {}
 
 Phoenix.optionEnable = Menu.AddOptionBool({ "Hero Specific", "Phoenix" }, "Phoenix", false)
 Phoenix.FireSpiritTargetKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Fire spirit at the target", Enum.ButtonCode.BUTTON_CODE_NONE)
-Phoenix.FireSpiritKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Fire spirit at all", Enum.ButtonCode.BUTTON_CODE_NONE)
 Phoenix.ComboKey = Menu.AddKeyOption({ "Hero Specific", "Phoenix" }, "Combo key", Enum.ButtonCode.BUTTON_CODE_NONE)
 Phoenix.optionEnableOrchid  = Menu.AddOptionBool({"Hero Specific", "Phoenix","Items"},"use Orchid",false)
 Phoenix.optionEnableThorn  = Menu.AddOptionBool({"Hero Specific", "Phoenix","Items"},"use Bloodthorn ",false)
@@ -26,10 +25,6 @@ function Phoenix.OnUpdate()
 
     if Menu.IsKeyDownOnce(Phoenix.FireSpiritTargetKey) then 
 	Phoenix.FireSpirit(myHero, enemy) 
-	end
-	
-	if Menu.IsKeyDownOnce(Phoenix.FireSpiritKey) then 
-	Phoenix.FireSpiritCombo(myHero, enemy) 
 	end
 	
 	if Menu.IsKeyDown(Phoenix.ComboKey) then 
@@ -182,34 +177,6 @@ end
 		end
 end
 
-function Phoenix.FireSpiritCombo(myHero, enemy)
-local fs = NPC.GetAbility(myHero, "phoenix_fire_spirits")
-local lfs = NPC.GetAbility(myHero, "phoenix_launch_fire_spirit")
-local range = 1400
-  local enemy = Entity.GetHeroesInRadius(myHero, range, Enum.TeamType.TEAM_ENEMY)
-  if lfs and Ability.IsReady(lfs) and Ability.IsCastable(lfs, mana) then 
-    for i, enemies in ipairs(enemy) do
-	  if NPC.HasModifier(enemies, "modifier_phoenix_fire_spirit_burn") then return 
-	  else
-			if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
-			Ability.CastPosition(lfs, Entity.GetAbsOrigin(enemies))
-			else
-			local speed = NPC.GetMoveSpeed(enemies)
-				local angle = Entity.GetRotation(enemies)
-				local angleOffset = Angle(0, 45, 0)
-				angle:SetYaw(angle:GetYaw() + angleOffset:GetYaw())
-				local x,y,z = angle:GetVectors()
-				local direction = x + y + z
-				direction:SetZ(0)
-				direction:Normalize()
-				direction:Scale(speed + 10)
-				Phoenix.CastPosition = Entity.GetAbsOrigin(enemies) + direction
-				Ability.CastPosition(lfs, Phoenix.CastPosition)
-		end
-		end
-		end
-end
-end
 
 function Phoenix.InFront(delay)
 	local enemyPos = Entity.GetAbsOrigin(enemy)
