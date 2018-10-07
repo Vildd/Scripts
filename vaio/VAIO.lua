@@ -124,6 +124,7 @@ function VAIO.OnUpdate()
 	end
 	local silver = NPC.GetItem(myHero, "item_silver_edge", true)
 	local scptr = NPC.GetItem(myHero, "item_ultimate_scepter", true)
+	local atos = NPC.GetItem(myHero, "item_rod_of_atos", true)
 
 	--Juggernaut
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_juggernaut" and Menu.IsEnabled(VAIO.optionJuggernaut) then
