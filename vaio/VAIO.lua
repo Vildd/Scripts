@@ -199,7 +199,7 @@ function VAIO.OnUpdate()
 				if npc and npc ~= myHero and Entity.IsSameTeam(myHero, npc) then
 					if (Entity.GetOwner(myHero) == Entity.GetOwner(npc) or Entity.OwnedBy(npc, myHero)) then
 						if NPC.GetUnitName(npc) == "npc_dota_juggernaut_healing_ward" then
-							NPC.MoveTo(npc, mypos, false, false)
+							NPC.MoveTo(npc, Entity.GetAbsOrigin(myHero), false, false)
 							return
 						end
 					end
