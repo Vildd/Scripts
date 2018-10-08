@@ -9,6 +9,7 @@ VAIO.optionJuggernautComboKey = Menu.AddKeyOption({"VAIO", "Juggernaut"}, "Combo
 VAIO.optionJuggernautBlink  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Blink", false)
 VAIO.optionJuggernautAbyssal  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Abyssal", false)
 VAIO.optionJuggernautManta  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Manta", false)
+VAIO.optionJuggernautDiffusal  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Diffusal", false)
 VAIO.optionJuggernautNullifier  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Nullifier", false)
 VAIO.optionJuggernautSilence  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Silence", false)
 VAIO.optionJuggernautMom  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Mom", false)
@@ -144,6 +145,10 @@ function VAIO.OnUpdate()
 					Ability.CastPosition(blink, Entity.GetAbsOrigin(enemy))
 					return
 				end
+			end
+			if Menu.IsEnabled(VAIO.optionJuggernautDiffusal) and diffusal and Ability.IsCastable(diffusal, mana) and Ability.IsReady(diffusal) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
+				Ability.CastTarget(diffusal, enemy)
+				return
 			end
 			if Menu.IsEnabled(VAIO.optionJuggernautMom) and mom and Ability.IsCastable(mom, mana) and Ability.IsReady(mom) then
 				Ability.CastNoTarget(mom)
