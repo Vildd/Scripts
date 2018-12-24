@@ -322,7 +322,7 @@ function VAIO.OnUpdate()
 						end
 					end
 					if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
-							if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_VAIO_lightning_storm_slow") then
+							if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_leshrac_lightning_storm_slow") then
 							Ability.CastPosition(q, VAIO.InFront(150))
 							return
 						else
