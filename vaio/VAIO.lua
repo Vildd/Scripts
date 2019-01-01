@@ -2,6 +2,7 @@ local VAIO = {}
 
 VAIO.optionEnable = Menu.AddOptionBool({"VAIO"}, "Enable", false)
 VAIO.optionTarget = Menu.AddOptionSlider({"VAIO"}, "Target Radius", 200, 1000, 500)
+VAIO.optionNullifier = Menu.AddOptionBool({"VAIO"}, "Nullifier", false)
 
 --Juggernaut
 VAIO.optionJuggernaut = Menu.AddOptionBool({"VAIO", "Juggernaut"}, "Juggernaut", false)
@@ -9,7 +10,6 @@ VAIO.optionJuggernautComboKey = Menu.AddKeyOption({"VAIO", "Juggernaut"}, "Combo
 VAIO.optionJuggernautBlink  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Blink", false)
 VAIO.optionJuggernautAbyssal  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Abyssal", false)
 VAIO.optionJuggernautManta  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Manta", false)
-VAIO.optionJuggernautDiffusal  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Diffusal", false)
 VAIO.optionJuggernautNullifier  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Nullifier", false)
 VAIO.optionJuggernautSilence  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Silence", false)
 VAIO.optionJuggernautMom  = Menu.AddOptionBool({"VAIO", "Juggernaut", "Items"}, "Mom", false)
@@ -29,7 +29,7 @@ VAIO.optionLeshracAtos  = Menu.AddOptionBool({"VAIO", "Leshrac", "Items"}, "Atos
 VAIO.optionLeshracUrn  = Menu.AddOptionBool({"VAIO", "Leshrac", "Items"}, "Urn", false)
 VAIO.optionLeshracBkb = Menu.AddOptionBool({"VAIO", "Leshrac", "Items"}, "Bkb", false)
 VAIO.optionLeshracComboEul = Menu.AddOptionBool({"VAIO", "Leshrac"}, "Eul in combo", false)
-VAIO.optionLeshracBSDenying = Menu.AddOptionBool({"VAIO", "Leshrac"}, "Bloodstone Denying", false)
+VAIO.optionLeshracBSDenying = Menu.AddOptionBool({"VAIO", "Leshrac"}, "Bloodstone", false)
 VAIO.optionLeshracHPDenying = Menu.AddOptionSlider({"VAIO", "Leshrac"}, "HP threshold", 10 ,50, 30)
 
 --Terrorblade
@@ -69,6 +69,7 @@ VAIO.optionBrewmasterBeaker = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Cast b
 VAIO.optionBrewmasterInvisible = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Auto invisible", false)
 VAIO.optionBrewmasterClap = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Auto clap(in ult)", false)
 VAIO.optionBrewmasterBeer = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Auto beer(in ult)", false)
+VAIO.optionBrewmasterBrawler = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Auto brawler(in ult)", false)
 VAIO.optionBrewmasterSave = Menu.AddOptionBool({"VAIO", "Brewmaster"}, "Auto ultimate", false)
 VAIO.optionBrewmasterSaveSlider = Menu.AddOptionSlider({"VAIO", "Brewmaster"}, "HP threshold", 10 ,70, 40)
 
@@ -80,75 +81,84 @@ function VAIO.OnUpdate()
 	enemy = VAIO.Target(myHero)
 
 	--Items
-	local mom = NPC.GetItem(myHero, "item_mask_of_madness", true)
-	local urn = NPC.GetItem(myHero, "item_urn_of_shadows", true)
-	local vessel = NPC.GetItem(myHero, "item_spirit_vessel", true)
-	local hex = NPC.GetItem(myHero, "item_sheepstick", true)
-	local nullifier = NPC.GetItem(myHero, "item_nullifier", true)
-	local diffusal = NPC.GetItem(myHero, "item_diffusal_blade", true)
-	local mjolnir = NPC.GetItem(myHero, "item_mjollnir", true)
-	local halberd = NPC.GetItem(myHero, "item_heavens_halberd", true)
-	local abyssal = NPC.GetItem(myHero, "item_abyssal_blade", true)
-	local armlet = NPC.GetItem(myHero, "item_armlet", true)
-	local bloodthorn = NPC.GetItem(myHero, "item_bloodthorn", true)
-	local bkb = NPC.GetItem(myHero, "item_black_king_bar", true)
-	local courage = NPC.GetItem(myHero, "item_medallion_of_courage", true)
-	local solar = NPC.GetItem(myHero, "item_solar_crest", true)
-	local blink = NPC.GetItem(myHero, "item_blink", true)
-	local blademail = NPC.GetItem(myHero, "item_blade_mail", true)
-	local orchid = NPC.GetItem(myHero, "item_orchid", true)
-	local lotus = NPC.GetItem(myHero, "item_lotus_orb", true)
-	local cyclone = NPC.GetItem(myHero, "item_cyclone", true)
-	local satanic = NPC.GetItem(myHero, "item_satanic", true)
-	local force = NPC.GetItem(myHero, "item_force_staff", true)
-	local pike = NPC.GetItem(myHero, "item_hurricane_pike", true)
-	local eblade = NPC.GetItem(myHero, "item_ethereal_blade", true)
-	local phase = NPC.GetItem(myHero, "item_phase_boots", true)
-	local dagon = NPC.GetItem(myHero, "item_dagon", true)
+	mom = NPC.GetItem(myHero, "item_mask_of_madness", true)
+	urn = NPC.GetItem(myHero, "item_urn_of_shadows", true)
+	vessel = NPC.GetItem(myHero, "item_spirit_vessel", true)
+	hex = NPC.GetItem(myHero, "item_sheepstick", true)
+	nullifier = NPC.GetItem(myHero, "item_nullifier", true)
+	diffusal = NPC.GetItem(myHero, "item_diffusal_blade", true)
+	mjolnir = NPC.GetItem(myHero, "item_mjollnir", true)
+	halberd = NPC.GetItem(myHero, "item_heavens_halberd", true)
+	abyssal = NPC.GetItem(myHero, "item_abyssal_blade", true)
+	armlet = NPC.GetItem(myHero, "item_armlet", true)
+	bloodthorn = NPC.GetItem(myHero, "item_bloodthorn", true)
+	bkb = NPC.GetItem(myHero, "item_black_king_bar", true)
+	courage = NPC.GetItem(myHero, "item_medallion_of_courage", true)
+	solar = NPC.GetItem(myHero, "item_solar_crest", true)
+	blink = NPC.GetItem(myHero, "item_blink", true)
+	blademail = NPC.GetItem(myHero, "item_blade_mail", true)
+	orchid = NPC.GetItem(myHero, "item_orchid", true)
+	lotus = NPC.GetItem(myHero, "item_lotus_orb", true)
+	cyclone = NPC.GetItem(myHero, "item_cyclone", true)
+	satanic = NPC.GetItem(myHero, "item_satanic", true)
+	force = NPC.GetItem(myHero, "item_force_staff", true)
+	pike = NPC.GetItem(myHero, "item_hurricane_pike", true)
+	eblade = NPC.GetItem(myHero, "item_ethereal_blade", true)
+	phase = NPC.GetItem(myHero, "item_phase_boots", true)
+	dagon = NPC.GetItem(myHero, "item_dagon", true)
 	if not dagon then
 		for i = 2, 5 do
-			local dagon = NPC.GetItem(myHero, "item_dagon_" .. i, true)
+			dagon = NPC.GetItem(myHero, "item_dagon_" .. i, true)
 			if dagon then break end
 		end
 	end
-	local discord = NPC.GetItem(myHero, "item_veil_of_discord", true)
-	local shiva = NPC.GetItem(myHero, "item_shivas_guard", true)
-	local refresher = NPC.GetItem(myHero, "item_refresher", true)
-	local soulring = NPC.GetItem(myHero, "item_soul_ring", true)
-	local manta = NPC.GetItem(myHero, "item_manta", true)
-	local necro = NPC.GetItem(myHero, "item_necronomicon", true)
+	discord = NPC.GetItem(myHero, "item_veil_of_discord", true)
+	shiva = NPC.GetItem(myHero, "item_shivas_guard", true)
+	refresher = NPC.GetItem(myHero, "item_refresher", true)
+	soulring = NPC.GetItem(myHero, "item_soul_ring", true)
+	manta = NPC.GetItem(myHero, "item_manta", true)
+	necro = NPC.GetItem(myHero, "item_necronomicon", true)
 	if not necro then
 		for i = 2, 3 do
-			local necro = NPC.GetItem(myHero, "item_necronomicon_" .. i, true)
+			necro = NPC.GetItem(myHero, "item_necronomicon_" .. i, true)
 			if necro then break end
 		end
 	end
-	local silver = NPC.GetItem(myHero, "item_silver_edge", true)
-	local scptr = NPC.GetItem(myHero, "item_ultimate_scepter", true)
-	local atos = NPC.GetItem(myHero, "item_rod_of_atos", true)
+	silver = NPC.GetItem(myHero, "item_silver_edge", true)
+	scptr = NPC.GetItem(myHero, "item_ultimate_scepter", true)
+
+	--Nullifier
+	if Menu.IsEnabled(VAIO.optionNullifier) then
+		if nullifier and Ability.IsCastable(nullifier, mana) and Ability.IsReady(nullifier) then
+			enemies = Entity.GetHeroesInRadius(myHero, 1000, Enum.TeamType.TEAM_ENEMY)
+			if not enemies or #enemies < 1 then return end
+			for i, enemy in ipairs(enemies) do
+				if NPC.HasModifier(enemy, "modifier_item_aeon_disk_buff") then
+					Ability.CastTarget(nullifier, enemy)
+					return
+				end
+			end
+		end
+	end
 
 	--Juggernaut
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_juggernaut" and Menu.IsEnabled(VAIO.optionJuggernaut) then
 
 		--Skills
-		local q = NPC.GetAbility(myHero, "juggernaut_blade_fury")
-		local w = NPC.GetAbility(myHero, "juggernaut_healing_ward")
-		local r = NPC.GetAbility(myHero, "juggernaut_omni_slash")
+		q = NPC.GetAbility(myHero, "juggernaut_blade_fury")
+		w = NPC.GetAbility(myHero, "juggernaut_healing_ward")
+		r = NPC.GetAbility(myHero, "juggernaut_omni_slash")
 
 		--Combo
 		if Menu.IsKeyDown(VAIO.optionJuggernautComboKey) then
 			if Menu.IsEnabled(VAIO.optionJuggernautBlink) and blink and Ability.IsCastable(blink, mana) and Ability.IsReady(blink) then
 				distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 				if distance>1200 then
-					Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 				else
 					Ability.CastPosition(blink, Entity.GetAbsOrigin(enemy))
 					return
 				end
-			end
-			if Menu.IsEnabled(VAIO.optionJuggernautDiffusal) and diffusal and Ability.IsCastable(diffusal, mana) and Ability.IsReady(diffusal) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
-				Ability.CastTarget(diffusal, enemy)
-				return
 			end
 			if Menu.IsEnabled(VAIO.optionJuggernautMom) and mom and Ability.IsCastable(mom, mana) and Ability.IsReady(mom) then
 				Ability.CastNoTarget(mom)
@@ -166,9 +176,22 @@ function VAIO.OnUpdate()
 				Ability.CastNoTarget(manta)
 				return
 			end
+			if manta and Ability.IsReady(manta) then
+				for i = 1, NPCs.Count() do
+					local npc = NPCs.Get(i)
+					if npc and NPC.GetUnitName(npc) == "npc_dota_hero_juggernaut" and Entity.IsSameTeam(myHero, npc) and Entity.OwnedBy(npc, myHero) then
+						Player.AttackTarget(Players.GetLocal(), npc, enemy)
+						return
+					end
+				end
+			end
 			if Menu.IsEnabled(VAIO.optionJuggernautNullifier) and nullifier and Ability.IsCastable(nullifier, mana) and Ability.IsReady(nullifier) then
-				Ability.CastTarget(nullifier, enemy)
-				return
+				if NPC.GetItem(enemy, "item_aeon_disk", true) and not Ability.IsReady(NPC.GetItem(enemy, "item_aeon_disk", true)) then
+					return
+				else
+					Ability.CastTarget(nullifier, enemy)
+					return
+				end
 			end
 			if Menu.IsEnabled(VAIO.optionJuggernautSilence) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_SILENCED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED)  then
 				if orchid and Ability.IsCastable(orchid, mana) and Ability.IsReady(orchid) then
@@ -180,7 +203,7 @@ function VAIO.OnUpdate()
 					return
 				end
 			end
-			Player.AttackTarget(Players.GetLocal() , MyHero, enemy)
+			Player.AttackTarget(Players.GetLocal(), MyHero, enemy)
 			return
 		end
 
@@ -205,7 +228,7 @@ function VAIO.OnUpdate()
 				if npc and npc ~= myHero and Entity.IsSameTeam(myHero, npc) then
 					if (Entity.GetOwner(myHero) == Entity.GetOwner(npc) or Entity.OwnedBy(npc, myHero)) then
 						if NPC.GetUnitName(npc) == "npc_dota_juggernaut_healing_ward" then
-							NPC.MoveTo(npc, Entity.GetAbsOrigin(myHero), false, false)
+							Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION, Entity.GetAbsOrigin(myHero), Entity.GetAbsOrigin(myHero), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, npc)
 							return
 						end
 					end
@@ -218,31 +241,31 @@ function VAIO.OnUpdate()
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_leshrac" and Menu.IsEnabled(VAIO.optionLeshrac) then
 
 		--Skills
-		local q = NPC.GetAbility(myHero, "leshrac_split_earth")
-		local w = NPC.GetAbility(myHero, "leshrac_diabolic_edict")
-		local e = NPC.GetAbility(myHero, "leshrac_lightning_storm")
-		local r = NPC.GetAbility(myHero, "leshrac_pulse_nova")
+		q = NPC.GetAbility(myHero, "leshrac_split_earth")
+		w = NPC.GetAbility(myHero, "leshrac_diabolic_edict")
+		e = NPC.GetAbility(myHero, "leshrac_lightning_storm")
+		r = NPC.GetAbility(myHero, "leshrac_pulse_nova")
 
 		--Combo
 		if Menu.IsKeyDown(VAIO.optionLeshracCombo) then
 			if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then return end
-				if Menu.IsEnabled(VAIO.optionLeshracBkb) and bkb and Ability.IsCastable(bkb, mana-Ability.GetManaCost(q)) and Ability.IsReady(bkb) then
-					Ability.CastNoTarget(bkb)
+			if Menu.IsEnabled(VAIO.optionLeshracBkb) and bkb and Ability.IsCastable(bkb, mana-Ability.GetManaCost(q)) and Ability.IsReady(bkb) then
+				Ability.CastNoTarget(bkb)
+				return
+			end
+			if Menu.IsEnabled(VAIO.optionLeshracComboEul) and cyclone then
+				if Ability.IsCastable(cyclone, mana-Ability.GetManaCost(q)) and Ability.IsReady(cyclone) then
+					target = enemy
+					Ability.CastTarget(cyclone, enemy)
+					VAIO.EulTimer = 1.5 + os.clock()
 					return
 				end
-				if Menu.IsEnabled(VAIO.optionLeshracComboEul) and cyclone then
-					if Ability.IsCastable(cyclone, mana-Ability.GetManaCost(q)) and Ability.IsReady(cyclone) then
-						target = enemy
-						Ability.CastTarget(cyclone, enemy)
-						VAIO.EulTimer = 1.5 + os.clock()
+				if VAIO.EulTimer < os.clock() then
+					if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
+						Ability.CastPosition(q, Entity.GetAbsOrigin(target))
 						return
 					end
-					if VAIO.EulTimer < os.clock() then
-						if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
-							Ability.CastPosition(q, Entity.GetAbsOrigin(target))
-							return
-						end
-						if Menu.IsEnabled(VAIO.optionLeshracSilence) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_SILENCED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED)  then
+					if Menu.IsEnabled(VAIO.optionLeshracSilence) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_SILENCED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED)  then
 						if orchid and Ability.IsCastable(orchid, mana) and Ability.IsReady(orchid) then
 							Ability.CastTarget(orchid, target)
 							return
@@ -251,84 +274,18 @@ function VAIO.OnUpdate()
 							Ability.CastTarget(bloodthorn, target)
 							return
 						end
-						end
-						if Menu.IsEnabled(VAIO.optionLeshracDiscord) and discord and Ability.IsCastable(discord, mana) and Ability.IsReady(discord) then
-							Ability.CastPosition(discord, Entity.GetAbsOrigin(target))
-							return
-						end
-						if Menu.IsEnabled(VAIO.optionLeshracShiva) and shiva and Ability.IsCastable(shiva, mana) and Ability.IsReady(shiva) then
-							Ability.CastNoTarget(shiva)
-							return
-						end
-						if e and Ability.IsCastable(e, mana) and Ability.IsReady(e) then
-							Ability.CastTarget(e, target)
-							return
-						end
-						if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
-							Ability.CastNoTarget(w)
-							return
-						end
-						if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_pulse_nova") then
-							Ability.Toggle(r)
-							return
-						end
-						distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
-						if distance<400 then
-							Player.AttackTarget(Players.GetLocal() , myHero, enemy, true)
-							return
-						end
 					end
-				else
-					if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) then
-						if Menu.IsEnabled(VAIO.optionLeshracHex) and hex and Ability.IsCastable(hex, mana-Ability.GetManaCost(q)) and Ability.IsReady(hex) then
-							Ability.CastTarget(hex, enemy)
-							return
-						end
-							if Menu.IsEnabled(VAIO.optionLeshracAtos) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) and atos and Ability.IsCastable(atos, mana-Ability.GetManaCost(q)) and Ability.IsReady(atos) then
-							Ability.CastTarget(atos, enemy)
-							return
-						end
-					end
-					if Menu.IsEnabled(VAIO.optionLeshracSilence) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_SILENCED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED)  then
-						if orchid and Ability.IsCastable(orchid, mana-Ability.GetManaCost(q)) and Ability.IsReady(orchid) then
-							Ability.CastTarget(orchid, enemy)
-							return
-						end
-						if bloodthorn and Ability.IsCastable(bloodthorn, mana-Ability.GetManaCost(q)) and Ability.IsReady(bloodthorn) then
-							Ability.CastTarget(bloodthorn, enemy)
-							return
-						end
-					end
-					if Menu.IsEnabled(VAIO.optionLeshracDiscord) and discord and Ability.IsCastable(discord, mana-Ability.GetManaCost(q)) and Ability.IsReady(discord) then
-						Ability.CastPosition(discord, VAIO.InFront(150))
+					if Menu.IsEnabled(VAIO.optionLeshracDiscord) and discord and Ability.IsCastable(discord, mana) and Ability.IsReady(discord) then
+						Ability.CastPosition(discord, Entity.GetAbsOrigin(target))
 						return
 					end
-					if Menu.IsEnabled(VAIO.optionLeshracShiva) and shiva and Ability.IsCastable(shiva, mana-Ability.GetManaCost(q)) and Ability.IsReady(shiva) then
+					if Menu.IsEnabled(VAIO.optionLeshracShiva) and shiva and Ability.IsCastable(shiva, mana) and Ability.IsReady(shiva) then
 						Ability.CastNoTarget(shiva)
 						return
 					end
-					if e and Ability.IsCastable(e, mana-Ability.GetManaCost(q)) and Ability.IsReady(e) then
-						Ability.CastTarget(e, enemy)
+					if e and Ability.IsCastable(e, mana) and Ability.IsReady(e) then
+						Ability.CastTarget(e, target)
 						return
-					end
-					if Menu.IsEnabled(VAIO.optionLeshracUrn) then
-						if urn and Ability.IsCastable(urn, mana-Ability.GetManaCost(q)) and Ability.IsReady(urn) then
-							Ability.CastTarget(urn, enemy)
-							return
-						end
-						if vessel and Ability.IsCastable(vessel, mana-Ability.GetManaCost(q)) and Ability.IsReady(vessel) then
-							Ability.CastTarget(vessel, enemy)
-							return
-						end
-					end
-					if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
-							if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_leshrac_lightning_storm_slow") then
-							Ability.CastPosition(q, VAIO.InFront(150))
-							return
-						else
-							Ability.CastPosition(q, VAIO.InFront(900))
-							return
-						end
 					end
 					if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
 						Ability.CastNoTarget(w)
@@ -340,9 +297,75 @@ function VAIO.OnUpdate()
 					end
 					distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 					if distance<400 then
-						Player.AttackTarget(Players.GetLocal() , myHero, enemy, true)
+						Player.AttackTarget(Players.GetLocal(), MyHero, enemy)
 						return
 					end
+				end
+			else
+				if not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) then
+					if Menu.IsEnabled(VAIO.optionLeshracHex) and hex and Ability.IsCastable(hex, mana-Ability.GetManaCost(q)) and Ability.IsReady(hex) then
+						Ability.CastTarget(hex, enemy)
+						return
+					end
+					if Menu.IsEnabled(VAIO.optionLeshracAtos) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) and atos and Ability.IsCastable(atos, mana-Ability.GetManaCost(q)) and Ability.IsReady(atos) then
+						Ability.CastTarget(atos, enemy)
+						return
+					end
+				end
+				if Menu.IsEnabled(VAIO.optionLeshracSilence) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_SILENCED) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED)  then
+					if orchid and Ability.IsCastable(orchid, mana-Ability.GetManaCost(q)) and Ability.IsReady(orchid) then
+						Ability.CastTarget(orchid, enemy)
+						return
+					end
+					if bloodthorn and Ability.IsCastable(bloodthorn, mana-Ability.GetManaCost(q)) and Ability.IsReady(bloodthorn) then
+						Ability.CastTarget(bloodthorn, enemy)
+						return
+					end
+				end
+				if Menu.IsEnabled(VAIO.optionLeshracDiscord) and discord and Ability.IsCastable(discord, mana-Ability.GetManaCost(q)) and Ability.IsReady(discord) then
+					Ability.CastPosition(discord, VAIO.InFront(150))
+					return
+				end
+				if Menu.IsEnabled(VAIO.optionLeshracShiva) and shiva and Ability.IsCastable(shiva, mana-Ability.GetManaCost(q)) and Ability.IsReady(shiva) then
+					Ability.CastNoTarget(shiva)
+					return
+				end
+				if e and Ability.IsCastable(e, mana-Ability.GetManaCost(q)) and Ability.IsReady(e) then
+					Ability.CastTarget(e, enemy)
+					return
+				end
+				if Menu.IsEnabled(VAIO.optionLeshracUrn) then
+					if urn and Ability.IsCastable(urn, mana-Ability.GetManaCost(q)) and Ability.IsReady(urn) then
+						Ability.CastTarget(urn, enemy)
+						return
+					end
+					if vessel and Ability.IsCastable(vessel, mana-Ability.GetManaCost(q)) and Ability.IsReady(vessel) then
+						Ability.CastTarget(vessel, enemy)
+						return
+					end
+				end
+				if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
+					if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_HEXED) and NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) or NPC.HasModifier(enemy, "modifier_leshrac_lightning_storm_slow") then
+						Ability.CastPosition(q, VAIO.InFront(150))
+						return
+					else
+						Ability.CastPosition(q, VAIO.InFront(900))
+						return
+					end
+				end
+				if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
+					Ability.CastNoTarget(w)
+					return
+				end
+				if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) and not NPC.HasModifier(myHero, "modifier_leshrac_pulse_nova") then
+					Ability.Toggle(r)
+					return
+				end
+				distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
+				if distance<400 then
+					Player.AttackTarget(Players.GetLocal(), myHero, enemy, true)
+					return
+				end
 			end
 		end
 
@@ -362,10 +385,10 @@ function VAIO.OnUpdate()
 	if NPC.GetUnitName(myHero) == "npc_dota_hero_terrorblade" and Menu.IsEnabled(VAIO.optionTerrorblade) then
 
 		--Skills
-		local q = NPC.GetAbility(myHero, "terrorblade_reflection")
-		local w = NPC.GetAbility(myHero, "terrorblade_conjure_image")
-		local e = NPC.GetAbility(myHero, "terrorblade_metamorphosis")
-		local r = NPC.GetAbility(myHero, "terrorblade_sunder")
+		q = NPC.GetAbility(myHero, "terrorblade_reflection")
+		w = NPC.GetAbility(myHero, "terrorblade_conjure_image")
+		e = NPC.GetAbility(myHero, "terrorblade_metamorphosis")
+		r = NPC.GetAbility(myHero, "terrorblade_sunder")
 
 		--Combo
 		if Menu.IsKeyDown(VAIO.optionTerrorbladeComboKey) then
@@ -384,8 +407,12 @@ function VAIO.OnUpdate()
 				end
 			end
 			if Menu.IsEnabled(VAIO.optionTerrorbladeNullifier) and nullifier and Ability.IsCastable(nullifier, mana) and Ability.IsReady(nullifier) then
-				Ability.CastTarget(nullifier, enemy)
-				return
+				if NPC.GetItem(enemy, "item_aeon_disk", true) and not Ability.IsReady(NPC.GetItem(enemy, "item_aeon_disk", true)) then
+					return
+				else
+					Ability.CastTarget(nullifier, enemy)
+					return
+				end
 			end
 			if Menu.IsEnabled(VAIO.optionTerrorbladeDiffusal) and diffusal and Ability.IsCastable(diffusal, mana) and Ability.IsReady(diffusal) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 				Ability.CastTarget(diffusal, enemy)
@@ -399,6 +426,15 @@ function VAIO.OnUpdate()
 				Ability.CastNoTarget(manta)
 				return
 			end
+			if manta and Ability.IsReady(manta) then
+				for i = 1, NPCs.Count() do
+					local npc = NPCs.Get(i)
+					if npc and NPC.GetUnitName(npc) == "npc_dota_hero_terrorblade" and Entity.IsSameTeam(myHero, npc) and Entity.OwnedBy(npc, myHero) then
+						Player.AttackTarget(Players.GetLocal(), npc, enemy)
+						return
+					end
+				end
+			end
 			if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
 				Ability.CastNoTarget(w)
 				return
@@ -410,7 +446,7 @@ function VAIO.OnUpdate()
 					return
 				end
 			end
-			Player.AttackTarget(Players.GetLocal() , myHero, enemy, false)
+			Player.AttackTarget(Players.GetLocal(), myHero, enemy, false)
 			return
 		end
 
@@ -443,19 +479,23 @@ function VAIO.OnUpdate()
 		if Menu.IsKeyDown(VAIO.optionSlarkComboKey) then
 			distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 			if distance>650 then
-				Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+				Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 			else
 				if NPC.HasState(myHero, Enum.ModifierState.MODIFIER_STATE_INVISIBLE) then
-					Player.AttackTarget(Players.GetLocal() , myHero, enemy, false)
+					Player.AttackTarget(Players.GetLocal(), myHero, enemy, false)
 				else
-					Player.AttackTarget(Players.GetLocal() , myHero, enemy, false)
+					Player.AttackTarget(Players.GetLocal(), myHero, enemy, false)
 					if q and Ability.IsCastable(q, mana) and Ability.IsReady(q) then
 						Ability.CastNoTarget(q)
 						return
 					end
 					if Menu.IsEnabled(VAIO.optionSlarkNullifier) and nullifier and Ability.IsCastable(nullifier, mana) and Ability.IsReady(nullifier) then
-						Ability.CastTarget(nullifier, enemy)
-						return
+						if NPC.GetItem(enemy, "item_aeon_disk", true) and not Ability.IsReady(NPC.GetItem(enemy, "item_aeon_disk", true)) then
+							return
+						else
+							Ability.CastTarget(nullifier, enemy)
+							return
+						end
 					end
 					if Menu.IsEnabled(VAIO.optionSlarkDiffusal) and diffusal and Ability.IsCastable(diffusal, mana) and Ability.IsReady(diffusal) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 						Ability.CastTarget(diffusal, enemy)
@@ -481,7 +521,7 @@ function VAIO.OnUpdate()
 					end
 					if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
 						castpos = (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(distance - 1))
-						Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+						Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 						puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(distance)
 						if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
 							predpos = VAIO.InFront(50)
@@ -502,7 +542,7 @@ function VAIO.OnUpdate()
 		if VAIO.casted == true then
 			distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 			castpos = (Entity.GetAbsOrigin(enemy) + (Entity.GetAbsOrigin(myHero) - Entity.GetAbsOrigin(enemy)):Normalized():Scaled(distance - 1))
-			Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+			Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 			puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(distance)
 			if NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_ROOTED) or NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_STUNNED) or not NPC.IsRunning(enemy) then
 				predpos = VAIO.InFront(50)
@@ -518,15 +558,18 @@ function VAIO.OnUpdate()
 		end
 
 		if VAIO.castedm == true then
+			puncepos = Entity.GetAbsOrigin(myHero) + Entity.GetRotation(myHero):GetForward():Normalized():Scaled(650)
+			puncetomouse = (Input.GetWorldCursorPos() + (Entity.GetAbsOrigin(myHero) - Input.GetWorldCursorPos()):Normalized():Scaled(distance - 650))
+			jump = (puncepos - puncetomouse):Length2D()
 			distance = (Input.GetWorldCursorPos() - Entity.GetAbsOrigin(myHero)):Length2D()
 			if w and Ability.IsCastable(w, mana) and Ability.IsReady(w) then
 				if VAIO.check == true then
 					VAIO.check = false
-					VAIO.ComboTimer = os.clock() + 0.3
+					VAIO.ComboTimer = os.clock() + 0.25
 				end
 				if VAIO.check == false then
 					castpos = (Input.GetWorldCursorPos() + (Entity.GetAbsOrigin(myHero) - Input.GetWorldCursorPos()):Normalized():Scaled(distance - 1))
-					Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, castpos, nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 					if VAIO.ComboTimer < os.clock() then
 						Ability.CastNoTarget(w)
 						VAIO.check = true
@@ -559,7 +602,7 @@ function VAIO.OnUpdate()
 		if Menu.IsEnabled(VAIO.optionBrewmasterSave) then
 			if r and Ability.IsCastable(r, mana) and Ability.IsReady(r) then
 				if (Entity.GetHealth(myHero) <= (Entity.GetMaxHealth(myHero) * (Menu.GetValue(VAIO.optionBrewmasterSaveSlider) / 100))) then
-					local enemies = Entity.GetHeroesInRadius(myHero, 1000, Enum.TeamType.TEAM_ENEMY)
+					enemies = Entity.GetHeroesInRadius(myHero, 1000, Enum.TeamType.TEAM_ENEMY)
 					if not enemies or #enemies < 1 then return end
 					Ability.CastNoTarget(r)
 					return
@@ -577,6 +620,8 @@ function VAIO.OnUpdate()
 						spnd=npc
 					elseif NPC.GetUnitName(npc) == "npc_dota_brewmaster_earth_1" or NPC.GetUnitName(npc) == "npc_dota_brewmaster_earth_2" or NPC.GetUnitName(npc) == "npc_dota_brewmaster_earth_3" then
 						epnd=npc
+					elseif NPC.GetUnitName(npc) == "npc_dota_brewmaster_fire_1" or NPC.GetUnitName(npc) == "npc_dota_brewmaster_fire_2" or NPC.GetUnitName(npc) == "npc_dota_brewmaster_fire_3" then
+						fpnd=npc	
 					end
 				end
 			end
@@ -599,6 +644,19 @@ function VAIO.OnUpdate()
 				emana = NPC.GetMana(epnd)
 				if stun and Ability.IsCastable(stun, emana) and Ability.IsReady(stun) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
 					Ability.CastTarget(stun, enemy)
+					return
+				end
+			end
+		end
+		
+		if Entity.IsAlive(fpnd) then
+			if Menu.IsEnabled(VAIO.optionBrewmasterBrawler) then
+				local brawler = NPC.GetAbility(fpnd, "brewmaster_drunken_brawler")
+				fmana = NPC.GetMana(fpnd)
+				if brawler and Ability.IsCastable(brawler, fmana) and Ability.IsReady(brawler) then
+					enemies = Entity.GetHeroesInRadius(fpnd, 400, Enum.TeamType.TEAM_ENEMY)
+					if not enemies or #enemies < 1 then return end
+					Ability.CastNoTarget(brawler)
 					return
 				end
 			end
@@ -634,7 +692,7 @@ function VAIO.OnUpdate()
 				local beer = NPC.GetAbility(spnd, "brewmaster_drunken_haze")
 				smana = NPC.GetMana(spnd)
 				if beer and Ability.IsCastable(beer, smana) and Ability.IsReady(beer) and not NPC.HasState(enemy, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) then
-					Ability.CastTarget(beer, enemy)
+					Ability.CastPosition(beer, Entity.GetAbsOrigin(enemy))
 					return
 				end
 			end
@@ -675,16 +733,16 @@ function VAIO.OnPrepareUnitOrders(orders)
 			if Menu.GetValue(VAIO.optionSlarkPounce) < 1 then
 				distance = (Entity.GetAbsOrigin(enemy) - Entity.GetAbsOrigin(myHero)):Length2D()
 				if distance>650 then
-					Player.PrepareUnitOrders(Players.GetLocal() , Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
+					Player.PrepareUnitOrders(Players.GetLocal(), Enum.UnitOrder.DOTA_UNIT_ORDER_MOVE_TO_POSITION,enemy, Entity.GetAbsOrigin(enemy), nil, Enum.PlayerOrderIssuer.DOTA_ORDER_ISSUER_PASSED_UNIT_ONLY, myHero)
 				else
 					VAIO.casted = true
 				end
 			else
 				VAIO.castedm = true
-				end
-				return false
-			else
-				return true
+			end
+			return false
+		else
+			return true
 		end
 	end
 end
@@ -692,13 +750,13 @@ end
 --Target
 function VAIO.Target(myHero)
 	if not myHero then return end
-	enemy = Input.GetNearestHeroToCursor(Entity.GetTeamNum(myHero), Enum.TeamType.TEAM_ENEMY)
-	if not enemy then return end
+	target = Input.GetNearestHeroToCursor(Entity.GetTeamNum(myHero), Enum.TeamType.TEAM_ENEMY)
+	if not target then return end
 	targetingRange = Menu.GetValue(VAIO.optionTarget)
 	mousePos = Input.GetWorldCursorPos()
-	enemyDist = (Entity.GetAbsOrigin(enemy) - mousePos):Length2D()
+	enemyDist = (Entity.GetAbsOrigin(target) - mousePos):Length2D()
 	if enemyDist < targetingRange then
-		return enemy
+		return target
 	else
 		return mousePos
 	end
@@ -706,17 +764,17 @@ end
 
 --Prediction
 function VAIO.InFront(delay)
-enemyPos = Entity.GetAbsOrigin(enemy)
-vec = Entity.GetRotation(enemy):GetVectors()
-adjusment = NPC.GetMoveSpeed(enemy)
-if delay == 610 then
-adjusment = 300
-end
-if vec then
-x = enemyPos:GetX() + vec:GetX() *(delay / 1000) * adjusment
-y = enemyPos:GetY() + vec:GetY() *(delay / 1000) * adjusment
-return Vector(x, y, enemyPos:GetZ())
-end
+	enemyPos = Entity.GetAbsOrigin(enemy)
+	vec = Entity.GetRotation(enemy):GetVectors()
+	adjusment = NPC.GetMoveSpeed(enemy)
+	if delay == 610 then
+		adjusment = 300
+	end
+	if vec then
+		x = enemyPos:GetX() + vec:GetX() *(delay / 1000) * adjusment
+		y = enemyPos:GetY() + vec:GetY() *(delay / 1000) * adjusment
+		return Vector(x, y, enemyPos:GetZ())
+	end
 end
 
 return VAIO
